@@ -37,6 +37,9 @@ class StatefulContainer(object):
         return self._state
 
     def __getattr__(self, name):
+        if name == "_state" or name == "_factories":
+            raise AttributeError(f"Attribute {name} has not been set")
+
         if name not in self._state and name in self._factories:
             self._state[name] = self._factories[name]()
 
